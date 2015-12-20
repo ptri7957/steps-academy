@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html ng-app="starter">
+<html ng-app="pedometer">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
@@ -36,11 +36,12 @@
                 <input id="text" type="text">
             </label>
             <div id="recording"></div>
+            <div id="steps"></div>
             <a href>
-                <div class="active" id="start" ng-click="startPedometer()">Start</div>
+                <div class="active" id="start" ng-click="startPedometerUpdates()">Start</div>
             </a>
             <a href>
-                <div class="inactive" id="end" ng-click="stopPedometer()">Stop Recording</div>
+                <div class="inactive" id="end" ng-click="stopPedometerUpdates()">Stop Recording</div>
             </a>
             <div id="results"></div>
         </ion-content>

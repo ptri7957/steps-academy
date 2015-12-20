@@ -1,42 +1,52 @@
-angular.module('starter', ['ionic'])
-
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(pedometer) {
-        console.log("Available!");
-    }else{
-        console.log("Not available...");
-    }
-  });
-}).controller('PedometerCtrl', ['$scope', function($scope){
-    // Success handler for starting pedometer updates
-    var successHandler = function(pedometerData){
+var starter = angular.module('starter', ['ionic']);
+starter.run(function($ionicPlatform){
+    $ionicPlatform.ready(function(){
         
-        // Grab the number of steps taken, and start and end dates
-        $scope.numberOfSteps = pedometerData.numberOfSteps;
-        $scope.startDate = pedometerData.startDate;
-        $scope.endDate = pedometerData.endDate;
-        document.getElementById("results").innerHTML = endDate;
+    });
+});
+
+    
+var pedometerApp = angular.module("pedometer", ['ionic']);
+pedometerApp.run(function($ionicPlatform){
+    $ionicPlatform.ready(function(){
+        if(pedometer) {
+            console.log(pedometer);
+            console.log("Available!");
+        
+            // Check if counting is available
+            pedometer.isStepCountingAvailable(function(){
+                console.log("success");
+            }, function(){
+                console.log("failure");
+            });
+        }else{
+            console.log("Not available...");
+        }
+    });
+});
+    
+pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
+    // Function to start the pedometer updates
+    $scope.startPedometerUpdates = function(){
+        // Start steps counter
+        pedometer.startPedometerUpdates(function(pedometerData){
+            console.log(pedometerData.startDate);
+            document.getElementById('steps').innerHTML = pedometerData.numberOfSteps;
+        }, function(){
+            console.log("error");
+        }); 
+        document.getElementById('recording').innerHTML = "Recording in session...";
+        
     };
     
-    // The error to throw if updating pedometer data fails
-    var onError = function(error){
-        console.log("Error: ", error);
-    };
-    
-    // Start pedometer updates
-    $scope.startPedometer = function(){
-        pedometer.startPedometerUpdates(successHandler, onError);
-        document.getElementById("recording").innerHTML = "Recording...";
-    };
-    
-    // Stop pedometer updates
-    $scope.stopPedometer = function(){
-        pedometer.stopPedometerUpdates(function(success){
-            console.log(success);
-        }, function(error){
-            console.log(error);
+    // Function to stop the pedometer updates
+    $scope.stopPedometerUpdates = function(){
+        // Stop updating
+        pedometer.stopPedometerUpdates(function(){
+            console.log("stopping success");
+        }, function(){
+            console.log("error");
         });
-        document.getElementById("recording").innerHTML = "Recording finished.";
-    };
+        document.getElementById('recording').innerHTML = "Recording finished";
+    }
 }]);
