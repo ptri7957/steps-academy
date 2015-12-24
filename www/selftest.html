@@ -21,6 +21,12 @@
         <!-- JQuery and Firebase libraries -->
         <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+        <script>
+            $('document').ready(function(){
+                $('#end').hide();
+                $('#showResults').hide();
+            });
+        </script>
     </head>
     <body>
         <ion-header-bar align-title="center" class="bar-stable">
@@ -38,10 +44,13 @@
             <div id="recording"></div>
             <div id="steps"></div>
             <a href>
-                <div class="active" id="start" ng-click="startPedometerUpdates()">Start</div>
+                <div class="main-button" id="start" ng-click="startPedometerUpdates()">Start</div>
             </a>
             <a href>
-                <div class="inactive" id="end" ng-click="stopPedometerUpdates()">Stop Recording</div>
+                <div class="main-button" id="end" ng-click="stopPedometerUpdates()">Stop Recording</div>
+            </a>
+            <a href>
+                <div class="main-button" id="showResults" ng-click="getResults()">Show Results</div>
             </a>
             <div id="results"></div>
         </ion-content>

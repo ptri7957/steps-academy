@@ -1,52 +1,47 @@
-var starter = angular.module('starter', ['ionic']);
-starter.run(function($ionicPlatform){
-    $ionicPlatform.ready(function(){
-        
-    });
-});
-
-    
 var pedometerApp = angular.module("pedometer", ['ionic']);
-pedometerApp.run(function($ionicPlatform){
-    $ionicPlatform.ready(function(){
-        if(pedometer) {
-            console.log(pedometer);
-            console.log("Available!");
-        
-            // Check if counting is available
-            pedometer.isStepCountingAvailable(function(){
-                console.log("success");
-            }, function(){
-                console.log("failure");
-            });
-        }else{
-            console.log("Not available...");
-        }
-    });
-});
-    
 pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
+    
+    var successHandler = function(pedometerData){
+        alert(pedometerData.numberOfSteps);
+        alert(pedometerData.startDate);
+        alert(pedometerData.endDate);
+        sessionStorage.numberOfSteps = pedometerData.numberOfSteps;
+        sessionStorage.startDate = pedometerData.startDate;
+        sessionStorage.endDate = pedometerData.endDate;
+    }
+    
+    var onError = function(error){
+        alert(error);
+    }
+    
     // Function to start the pedometer updates
     $scope.startPedometerUpdates = function(){
         // Start steps counter
-        pedometer.startPedometerUpdates(function(pedometerData){
-            console.log(pedometerData.startDate);
-            document.getElementById('steps').innerHTML = pedometerData.numberOfSteps;
-        }, function(){
-            console.log("error");
-        }); 
+        pedometer.startPedometerUpdates(successHandler, onError); 
         document.getElementById('recording').innerHTML = "Recording in session...";
-        
+        $('#start').hide();
+        $('#end').show();
     };
     
     // Function to stop the pedometer updates
     $scope.stopPedometerUpdates = function(){
         // Stop updating
         pedometer.stopPedometerUpdates(function(){
-            console.log("stopping success");
+            alert("stopping success");
         }, function(){
-            console.log("error");
+            alert("error");
         });
         document.getElementById('recording').innerHTML = "Recording finished";
+        $('#start').show();
+        $('#end').hide();
+        $('#showResults').show();
+    }
+    
+    $scope.getResults = function(){
+        var options = {
+            "startDate": new Date("Fri May 01 2015 15:20:00"),
+            "endDate": new Date()
+        }
+        pedometer.queryData(successHandler, onError, options);
     }
 }]);
