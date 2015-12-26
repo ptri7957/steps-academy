@@ -24,7 +24,8 @@
         <script>
             $('document').ready(function(){
                 $('#end').hide();
-                $('#showResults').hide();
+                $('#name').hide();
+                $('#inst').hide();
             });
         </script>
     </head>
@@ -38,19 +39,19 @@
 
         <ion-content padding="true" ng-controller="PedometerCtrl">
             <div class="desc">Enter the name of your trip</div>
-            <label class="item item-input">
+            <label id="label" class="item item-input">
                 <input id="text" type="text">
             </label>
+            <div id="name"></div>
+            <div id="notes">Add Notes</div>
             <div id="recording"></div>
+            <div id="inst"></div>
             <div id="steps"></div>
             <a href>
                 <div class="main-button" id="start" ng-click="startPedometerUpdates()">Start</div>
             </a>
             <a href>
-                <div class="main-button" id="end" ng-click="stopPedometerUpdates()">Stop Recording</div>
-            </a>
-            <a href>
-                <div class="main-button" id="showResults" ng-click="getResults()">Show Results</div>
+                <div class="main-button" id="end" ng-click="stopPedometerUpdates()">End</div>
             </a>
             <div id="results"></div>
         </ion-content>
