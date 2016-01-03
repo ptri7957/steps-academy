@@ -21,7 +21,7 @@ $('document').ready(function(){
             }else{
                 console.log("Authenticated successfully:", authData);
                 // Send user to their history page
-                window.location.href = "history.html"
+                window.location.href = "selftest.html"
                 // Store user id for future firebase reference
                 sessionStorage.user = authData.uid;
             }

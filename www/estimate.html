@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html ng-app="pedometer">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title></title>
+
+        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+        <link href="css/selftest.css" rel="stylesheet">
+        <style>
+            #results{
+                width: 80%;
+                margin-left: 10%;
+                text-align: center;
+            }
+            .col{
+                border: 1px solid black;
+            }
+        </style>
+        
+        <!-- ionic/angularjs js -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+        <!-- cordova script (this will be a 404 during development) -->
+        <script src="cordova.js"></script>
+
+        <!-- your app's js -->
+        <script src="js/app.js"></script>
+        
+        <!-- JQuery and Firebase libraries -->
+        <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+        
+    </head>
+    <body>
+        <ion-header-bar align-title="center" class="bar-stable">
+            <h1 class="title">Self Test</h1>
+            <div class="buttons" id="logout">
+                <button class="button button-assertive">Log out</button>
+            </div>
+        </ion-header-bar>
+
+        <ion-content padding="true">
+            <div id="name"></div>
+            <div id="estimates">
+                <h3>Enter your estimates</h3>
+                <label class="item item-input">
+                    <span class="input-label">Steps</span>
+                    <input id="stepInput" type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Intensity</span>
+                    <input id="intensityInput" type="text">
+                </label>
+                <a href>
+                    <div class="main-button" id="show-me">Show Me</div>
+                </a>
+            </div>
+            <div id="results">
+                <div class="row">
+                    <div class="col"><strong>Items</strong></div>
+                    <div class="col"><strong>You</strong></div>
+                    <div class="col"><strong>Actual</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col">Steps</div>
+                    <div class="col" id="yourSteps"></div>
+                    <div class="col" id="actualSteps"></div>
+                </div>
+                <div class="row">
+                    <div class="col">Intensity</div>
+                    <div class="col" id="yourIntensity"></div>
+                    <div class="col" id="actualIntensity"></div>
+                </div>
+                <a href>
+                    <div class="main-button" id="finish">Finish</div>
+                </a>
+            </div>
+        </ion-content>
+    </body>
+    <script src="js/estimate.js"></script>
+</html>

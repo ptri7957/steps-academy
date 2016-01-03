@@ -1,4 +1,7 @@
+// Module
 var pedometerApp = angular.module("pedometer", ['ionic']);
+
+// Controller
 pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
     
     // When the pedometer starts, grab pedometer data
@@ -11,6 +14,7 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
         $scope.numberOfSteps = pedometerData.numberOfSteps;
         $scope.startDate = pedometerData.startDate;
         $scope.endDate = pedometerData.endDate;
+        $('#steps').html(pedometerData.numberOFSteps);
     }
     
     // Pedometer will throw error if
@@ -18,6 +22,58 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
     // no sensors found on phone.
     var onError = function(error){
         alert(JSON.stringify(error));
+    }
+    
+    // Success callback
+    var successCallback = function(success){
+        alert(success);
+    }
+    
+    // Failure callback
+    var failureCallback = function(failure){
+        alert(failure);
+    }
+    
+    $scope.addNotes = function(){
+        $('#notes').show();
+        $('#intro').hide();
+        $scope.startFlag = false;
+    };
+    
+    $scope.addNotess = function(){
+        $('#notes').show();
+        $('#started').hide();
+        $scope.startFlag = true;
+    };
+    
+    $scope.done = function(){
+        if($scope.startFlag){
+            $('#started').show();
+        }else{
+            $('#intro').show();
+        }
+        $('#notes').hide();
+        
+        if($('#mood').val().length > 0){
+            sessionStorage.mood = $('#mood').val();
+        }
+        
+        if($('#health').val().length > 0){
+            sessionStorage.health = $('#health').val();
+        }
+        
+        if($('#weather').val().length > 0){
+            sessionStorage.weather = $('#weather').val();
+        }
+        
+        if($('#activity').val().length > 0){
+            sessionStorage.activity = $('#activity').val();
+        }
+        
+        if($('#transport').val().length > 0){
+            sessionStorage.transport = $('#transport').val();
+        }
+        
     }
     
     // Function to start the pedometer updates
@@ -30,16 +86,15 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
             $('#recording').append("<h3>App has started recording</h3>");
         
             var name = $('#text').val();
+            sessionStorage.name = name;
         
             // Hide main content
-            $('.desc').hide();   
-            $('#label').hide();
             $('#name').append("<h1>" + name + "</h1>");
-            $('#name').show();
-            $('#inst').html("Click End when you have completed your activity.");
-            $('#inst').show();
-            $('#start').hide();
-            $('#end').show();
+            $('#intro').hide();
+            //$('#name').show();
+            //$('#inst').show();
+           // $('#end').show();
+            $('#started').show();
         }
     };
     
@@ -47,15 +102,8 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
     $scope.stopPedometerUpdates = function(){
         
         // Stop updating
-        pedometer.stopPedometerUpdates(function(success){
-            alert(success);
-        }, function(error){
-            alert(error);
-        });
-            //$('#start').show();
-            //$('#end').hide();
-            //$('#showResults').show();
-            
+        pedometer.stopPedometerUpdates(successCallback, failureCallback);
+
         // Pass on pedometer data onto the next page
         if($scope.numberOfSteps){
             sessionStorage.numberOfSteps = $scope.numberOfSteps;
@@ -68,5 +116,6 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope){
         if($scope.endDate){
             sessionStorage.endDate = $scope.endDate;
         }
+        window.location.href = "estimate.html";
     }
 }]);
