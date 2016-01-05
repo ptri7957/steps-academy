@@ -14,7 +14,6 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope) {
         $scope.numberOfSteps = pedometerData.numberOfSteps;
         $scope.startDate = pedometerData.startDate;
         $scope.endDate = pedometerData.endDate;
-        $('#steps').html(pedometerData.numberOFSteps);
     };
     
     // Pedometer will throw error if
