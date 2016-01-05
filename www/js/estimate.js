@@ -39,16 +39,16 @@ $('document').ready(function(){
             var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users');
             ref.child(sessionStorage.user + "/activities/" +
                       sessionStorage.name)
-               .update({steps: sessionStorage.numberOfSteps, 
+               .update({name: sessionStorage.name,
+                        steps: sessionStorage.numberOfSteps, 
                         start_date: sessionStorage.startDate,
-                        end_date: sessionStorage.endDate,
-                        mood: sessionStorage.mood,
-                        health: sessionStorage.health,
-                        weather: sessionStorage.weather,
-                        activity: sessionStorage.activity,
-                        transport: sessionStorage.transport});
+                        end_date: sessionStorage.endDate});
         }
-        window.location.href = "selftest.html";
+        
+        setTimeout(function(){
+            window.location.replace("history.html");
+        }, 5000);
+        
     });
             
 });

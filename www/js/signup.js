@@ -18,12 +18,9 @@ $('document').ready(function(){
                     var userRef = ref.child("Users");
                     console.log(userData.uid);
                     userRef.child(userData.uid).update({
-                        email: email,
-                        // Pull array and append new activity objects to activities
-                        // e.g. activities.append({name, steps, intensity})
-                        // Finally update the activities value
-                        activities: ["None"]
+                        email: email
                     });
+                    alert('Sign up successful.');
                 }
             });
         }
