@@ -37,17 +37,26 @@ $('document').ready(function(){
     $('#finish').click(function(){
         if(sessionStorage.numberOfSteps && sessionStorage.startDate && sessionStorage.endDate){
             var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users');
+            var onComplete = function(error){
+                if (error) {
+                    console.log('Synchronization failed');
+                } else {
+                    console.log('Synchronization succeeded');
+                    window.location.replace("history.html");
+                }
+            }
             ref.child(sessionStorage.user + "/activities/" +
                       sessionStorage.name)
                .update({name: sessionStorage.name,
                         steps: sessionStorage.numberOfSteps, 
                         start_date: sessionStorage.startDate,
-                        end_date: sessionStorage.endDate});
+                        end_date: sessionStorage.endDate,
+                        mood: sessionStorage.mood,
+                        health: sessionStorage.health,
+                        weather: sessionStorage.weather,
+                        activity: sessionStorage.activity,
+                        transport: sessionStorage.transport}, onComplete);
         }
-        
-        setTimeout(function(){
-            window.location.replace("history.html");
-        }, 5000);
         
     });
             
