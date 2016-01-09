@@ -27,9 +27,9 @@ $('document').ready(function(){
                 var durationS = ((endDate.getTime() - startDate.getTime())/1000);
                 var durationM = ((endDate.getTime() - startDate.getTime())/1000/60);
                 var durationH = ((endDate.getTime() - startDate.getTime())/1000/60/60);
-                if(duration <= 60){
+                if(durationS <= 60){
                   duration.innerHTML = durationS + "Seconds";
-                }else if(duration >= 60 && duration <= 3600){
+                }else if(durationS >= 60 && durationS <= 3600){
                   duration.innerHTML = durationM + "Minutes";
                 }else{
                   duration.innerHTML = durationH + "Hours";
