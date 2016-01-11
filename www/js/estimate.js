@@ -35,22 +35,34 @@ $('document').ready(function(){
             
     // Action when finish is clicked
     $('#finish').click(function(){
-        if(sessionStorage.numberOfSteps && sessionStorage.startDate && sessionStorage.endDate){
-            var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users');
-            var onComplete = function(error){
-                if (error) {
-                    console.log('Synchronization failed');
-                } else {
-                    console.log('Synchronization succeeded');
-                    window.location.replace("history.html");
-                }
+        var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users');
+        var onComplete = function(error){
+            if (error) {
+                console.log('Synchronization failed');
+            } else {
+                console.log('Synchronization succeeded');
+                window.location.replace("history.html");
             }
+        }
+        if(sessionStorage.numberOfSteps && sessionStorage.startDate && sessionStorage.endDate){
             ref.child(sessionStorage.user + "/activities/" +
                       sessionStorage.name)
                .update({name: sessionStorage.name,
                         steps: sessionStorage.numberOfSteps, 
                         start_date: sessionStorage.startDate,
                         end_date: sessionStorage.endDate,
+                        mood: sessionStorage.mood,
+                        health: sessionStorage.health,
+                        weather: sessionStorage.weather,
+                        activity: sessionStorage.activity,
+                        transport: sessionStorage.transport}, onComplete);
+        }else{
+            ref.child(sessionStorage.user + "/activities/" +
+                      sessionStorage.name)
+               .update({name: sessionStorage.name,
+                        steps: 0, 
+                        start_date: 0,
+                        end_date: 0,
                         mood: sessionStorage.mood,
                         health: sessionStorage.health,
                         weather: sessionStorage.weather,
