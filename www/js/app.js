@@ -147,7 +147,6 @@ pedometerApp.controller('PedometerLoginCtrl', ['$scope', function($scope){
     }
     
     $scope.signout = function(){
-
         var email = $("#email").val();
         var pass = $("#password").val();
         var cpass = $("#comp-pass").val();
@@ -171,6 +170,105 @@ pedometerApp.controller('PedometerLoginCtrl', ['$scope', function($scope){
                     alert('Sign up successful.');
                 }
             });
+        }
+    }
+}]);
+
+// Estimation controller
+pedometerApp.controller('EstimateCtrl', ['$scope', function($scope){
+    $('#results').hide();
+    
+    $scope.logout = function(){
+        sessionStorage.clear();
+        window.location.href = "index.html";
+    }
+    
+    $scope.name = sessionStorage.name;
+    
+    $scope.actualIntensity = "Low";
+    
+    $scope.show = function(){
+        var estimate = $("#stepInput").val();
+        var intensity = $('#intensityInput').val();
+                
+        if(estimate.length > 0 && intensity.length > 0){
+            $('#yourSteps').html(estimate);
+            $('#yourIntensity').html(intensity);  
+            
+            // Calculate the intensity
+            if(sessionStorage.numberOfSteps){
+                $('#actualSteps').html(sessionStorage.numberOfSteps);
+                if(parseInt(sessionStorage.numberOfSteps) <= 100){
+                    $scope.actualIntensity = "Low";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 100
+                        && parseInt(sessionStorage.numberOfSteps) <= 120){
+                    $scope.actualIntensity = "Light";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 120
+                        && parseInt(sessionStorage.numberOfSteps) <= 130){
+                    $scope.actualIntensity = "Moderate";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 130
+                        && parseInt(sessionStorage.numberOfSteps) <= 140){
+                    $scope.actualIntensity = "Active";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 140
+                        && parseInt(sessionStorage.numberOfSteps) <= 150){
+                    $scope.actualIntensity = "Very Active";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 150
+                        && parseInt(sessionStorage.numberOfSteps) <= 160){
+                    $scope.actualIntensity = "Exceptionally Active";
+                }else{
+                    $scope.actualIntensity = "Athletic";
+                }
+            }else{
+                $('#actualSteps').html(0);
+            }
+            $('#actualIntensity').html($scope.actualIntensity);
+            
+            
+            $('#estimates').hide();
+            $('#results').show();
+        }else{
+            alert("One or more fields are empty");
+        }
+    }
+    
+    $scope.finish = function(){
+        var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users');
+        var onComplete = function(error){
+            if (error) {
+                console.log('Synchronization failed');
+            } else {
+                console.log('Synchronization succeeded');
+                window.location.replace("history.html");
+            }
+        }
+        
+        // Save activity data
+        if(sessionStorage.numberOfSteps && sessionStorage.startDate && sessionStorage.endDate){
+            ref.child(sessionStorage.user + "/activities/" +
+                      sessionStorage.name)
+               .update({name: sessionStorage.name,
+                        steps: sessionStorage.numberOfSteps, 
+                        start_date: sessionStorage.startDate,
+                        end_date: sessionStorage.endDate,
+                        mood: sessionStorage.mood,
+                        health: sessionStorage.health,
+                        weather: sessionStorage.weather,
+                        activity: sessionStorage.activity,
+                        transport: sessionStorage.transport,
+                        intensity: $scope.actualIntensity}, onComplete);
+        }else{
+            ref.child(sessionStorage.user + "/activities/" +
+                      sessionStorage.name)
+               .update({name: sessionStorage.name,
+                        steps: 0, 
+                        start_date: 0,
+                        end_date: 0,
+                        mood: sessionStorage.mood,
+                        health: sessionStorage.health,
+                        weather: sessionStorage.weather,
+                        activity: sessionStorage.activity,
+                        transport: sessionStorage.transport,
+                        intensity: $scope.actualIntensity}, onComplete);
         }
     }
 }]);

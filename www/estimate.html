@@ -42,8 +42,8 @@
         </ion-header-bar>
 
         <!-- Main content -->
-        <ion-content padding="true">
-            <div id="name"></div>
+        <ion-content padding="true" ng-controller="EstimateCtrl">
+            <div id="name"><h3>{{name}}</h3></div>
             <div id="estimates">
                 <h3>Enter your estimates</h3>
                 <label class="item item-input">
@@ -63,9 +63,9 @@
                     </select>
                 </label>
                 <a href>
-                    <div class="main-button" id="show-me">Show Me</div>
+                    <div class="main-button" id="show-me" ng-click="show()">Show Me</div>
                 </a>
-            </div>
+            </div> 
             <div id="results">
                 <div class="row">
                     <div class="col"><strong>Items</strong></div>
@@ -83,10 +83,12 @@
                     <div class="col" id="actualIntensity"></div>
                 </div>
                 <a href>
-                    <div class="main-button" id="finish">Finish</div>
+                    <div class="main-button" id="finish" ng-click="finish()">Finish</div>
                 </a>
             </div>
         </ion-content>
     </body>
+    <!--
     <script src="js/estimate.js"></script>
+-->
 </html>
