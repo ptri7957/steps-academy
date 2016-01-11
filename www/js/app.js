@@ -115,3 +115,62 @@ pedometerApp.controller('PedometerCtrl', ['$scope', function($scope) {
         window.location.href = "estimate.html";
     };
 }]);
+
+// Sign-in controller
+pedometerApp.controller('PedometerLoginCtrl', ['$scope', function($scope){
+    $scope.signin = function(){
+        // Reference firebase app
+        var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com');
+        
+        // User's email and password
+        var email = $("#email").val();
+        var pass = $("#password").val();
+        
+        // Authenticate user using email and password
+        ref.authWithPassword({
+            email : email,
+            password : pass}, 
+        // During authentication, check credentials.
+        // If successful, lead user to history page.
+        function(error, authData) {
+            if(error){
+                console.log("Login Failed!", error);
+                $('.error').append(error);
+            }else{
+                console.log("Authenticated successfully:", authData);
+                // Send user to their history page
+                window.location.href = "history.html"
+                // Store user id for future firebase reference
+                sessionStorage.user = authData.uid;
+            }
+        });
+    }
+    
+    $scope.signout = function(){
+
+        var email = $("#email").val();
+        var pass = $("#password").val();
+        var cpass = $("#comp-pass").val();
+    
+        if(cpass != pass){
+            $('#errormessage').html("Password confirmation does not match.")
+        }else{
+            var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com');
+            ref.createUser({
+                email: email,
+                password: pass
+            }, function(error, userData){
+                if(error){
+                    $('#errormessage').html(error);
+                }else{
+                    var userRef = ref.child("Users");
+                    console.log(userData.uid);
+                    userRef.child(userData.uid).update({
+                        email: email
+                    });
+                    alert('Sign up successful.');
+                }
+            });
+        }
+    }
+}]);

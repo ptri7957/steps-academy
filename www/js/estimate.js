@@ -10,7 +10,16 @@ $('document').ready(function(){
     if(sessionStorage.name){
         $('#name').html("<h3>" + sessionStorage.name + "</h3>");
     }
-            
+    /*
+        80-100 low
+        120 light
+        130 moderate
+        140 active
+        150 very active
+        160 exceptionally active
+        >170 athletic
+    */
+    var actualIntensity = "Low"; 
     // Action when show is clicked
     $('#show-me').click(function(){
         var estimate = $("#stepInput").val();
@@ -18,13 +27,36 @@ $('document').ready(function(){
                 
         if(estimate.length > 0 && intensity.length > 0){
             $('#yourSteps').html(estimate);
-            $('#yourIntensity').html(intensity);
+            $('#yourIntensity').html(intensity);  
+            
             if(sessionStorage.numberOfSteps){
                 $('#actualSteps').html(sessionStorage.numberOfSteps);
+                if(parseInt(sessionStorage.numberOfSteps) <= 100){
+                    actualIntensity = "Low";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 100
+                        && parseInt(sessionStorage.numberOfSteps) <= 120){
+                    actualIntensity = "Light";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 120
+                        && parseInt(sessionStorage.numberOfSteps) <= 130){
+                    actualIntensity = "Moderate";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 130
+                        && parseInt(sessionStorage.numberOfSteps) <= 140){
+                    actualIntensity = "Active";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 140
+                        && parseInt(sessionStorage.numberOfSteps) <= 150){
+                    actualIntensity = "Very Active";
+                }else if(parseInt(sessionStorage.numberOfSteps) > 150
+                        && parseInt(sessionStorage.numberOfSteps) <= 160){
+                    actualIntensity = "Exceptionally Active";
+                }else{
+                    actualIntensity = "Athletic";
+                }
             }else{
-                $('#actualSteps').html("Not given");
+                $('#actualSteps').html(0);
             }
-            $('#actualIntensity').html("Not given");
+            $('#actualIntensity').html(actualIntensity);
+            
+            
             $('#estimates').hide();
             $('#results').show();
         }else{
@@ -55,7 +87,8 @@ $('document').ready(function(){
                         health: sessionStorage.health,
                         weather: sessionStorage.weather,
                         activity: sessionStorage.activity,
-                        transport: sessionStorage.transport}, onComplete);
+                        transport: sessionStorage.transport,
+                        intensity: actualIntensity}, onComplete);
         }else{
             ref.child(sessionStorage.user + "/activities/" +
                       sessionStorage.name)
@@ -67,7 +100,8 @@ $('document').ready(function(){
                         health: sessionStorage.health,
                         weather: sessionStorage.weather,
                         activity: sessionStorage.activity,
-                        transport: sessionStorage.transport}, onComplete);
+                        transport: sessionStorage.transport,
+                        intensity: actualIntensity}, onComplete);
         }
         
     });

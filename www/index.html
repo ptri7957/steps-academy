@@ -28,7 +28,7 @@
       </ion-header-bar>
       
       <!-- Main content -->
-      <ion-content padding="true" class="main-content">
+      <ion-content padding="true" class="main-content" ng-controller="PedometerLoginCtrl">
           <h1 class="heading">Steps Academy</h1>
           <label class="item item-input">
               <span class="input-label">Email</span>
@@ -44,7 +44,7 @@
           <div class="error"></div>
             
           <a href>
-              <div class="sign-in">
+              <div class="sign-in" ng-click="signin()">
                   <strong>Sign In</strong>
               </div>
           </a>
@@ -55,6 +55,8 @@
               </div>
           </a>
       </ion-content>
+      <!--
       <script src="js/signin.js"></script>
+-->
   </body>
 </html>
