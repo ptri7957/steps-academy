@@ -90,7 +90,7 @@ app.filter('reverse', function() {
 });
 
 // Pedometer controller
-app.controller('pedometerController', function($scope){
+app.controller('pedometerController', function($scope, $ionicPopup){
     $('#started').hide();
     $('#notes').hide();
     
@@ -169,6 +169,25 @@ app.controller('pedometerController', function($scope){
         alert(failure);
     };
     
+    $scope.ready = function(){
+        $scope.data = {};
+        $ionicPopup.show({
+            templateUrl: 'pages/standby.html', 
+            title: 'Recording Ready',
+            scope: $scope,
+            buttons: [
+                {
+                    text: 'Record',
+                    type: 'button-positive',
+                    onTap: function(){
+                        $scope.startPedometerUpdates();
+                        $('#started').show();
+                    }
+                }
+            ]
+        });
+    };
+    
     // Function to start the pedometer updates
     $scope.startPedometerUpdates = function() {
         sessionStorage.startDate = new Date().getTime();
@@ -185,7 +204,7 @@ app.controller('pedometerController', function($scope){
             // Hide main content
             //$('#name').append("<h1>" + name + "</h1>");
             $('#intro').hide();
-            $('#started').show();
+            
         }
     };
     
