@@ -180,7 +180,28 @@ app.controller('pedometerController', function($scope, $ionicPopup){
                     text: 'Record',
                     type: 'button-positive',
                     onTap: function(){
+                        var estimate = $("#stepInput").val();
+                        var intensity = $('#intensityInput').val();
+                        var duration = $('#durationInput').val();
+                        var measure = $('#timeInput').val();
+                        if(estimate.length > 0){
+                            sessionStorage.estimate = estimate;
+                        }
+                        
+                        if(intensity != "--Select--"){
+                            sessionStorage.intensity = intensity;
+                        }
+                        
+                        if(duration.length > 0){
+                            sessionStorage.duration = duration;
+                        }
+                        
+                        if(measure != "--Select--"){
+                            sessionStorage.measure = measure;
+                        }
+                        
                         $scope.startPedometerUpdates();
+                        $('#intro').hide();
                         $('#started').show();
                     }
                 }
@@ -191,20 +212,15 @@ app.controller('pedometerController', function($scope, $ionicPopup){
     // Function to start the pedometer updates
     $scope.startPedometerUpdates = function() {
         sessionStorage.startDate = new Date().getTime();
-        if($('#text').val() == ""){
+        if($('#activityDetails').val() == ""){
             alert("Please enter a name for your activity.");
         } else {
             // Start steps counter
             pedometer.startPedometerUpdates(successHandler, onError); 
             $('#recording').append("<h3>Recording...</h3>");
         
-            var name = $('#text').val();
+            var name = $('#activityDetails').val();
             sessionStorage.name = name;
-        
-            // Hide main content
-            //$('#name').append("<h1>" + name + "</h1>");
-            $('#intro').hide();
-            
         }
     };
     
@@ -242,37 +258,45 @@ app.controller('estimateController', function($scope){
     $scope.actualIntensity = "Low";
     
     $scope.show = function(){
-        var estimate = $("#stepInput").val();
-        var intensity = $('#intensityInput').val();
-        var duration = $('#durationInput').val();
-        var measure = $('#timeInput').val();
-                
+        //var estimate = $("#stepInput").val();
+        //var intensity = $('#intensityInput').val();
+        //var duration = $('#durationInput').val();
+        //var measure = $('#timeInput').val();
+        
+        var estimate = "";
+        var intensity = "";
+        var duration = "";
+        var measure = "";
+        
+        if(sessionStorage.estimate){
+            estimate = sessionStorage.estimate;
+        }else{
+            estimate = $('#stepInput').val();
+        }
+        
+        if(sessionStorage.intensity){
+            intensity = sessionStorage.intensity;
+        }else{
+            intensity = $('#intensityInput').val();
+        }
+        
+        if(sessionStorage.duration){
+            duration = sessionStorage.duration;
+        }else{
+            duration = $('#durationInput').val();
+        }
+        
+        if(sessionStorage.measure){
+            measure = sessionStorage.measure;
+        }else{
+            measure = $('#timeInput').val();
+        }
+        
         if(estimate.length > 0 && intensity.length > 0 && duration.length > 0){
             $('#yourSteps').html(estimate);
             $('#yourIntensity').html(intensity);  
             $('#yourDuration').html(duration + " " + measure);
             
-            if(parseInt($scope.steps)/60 <= 100){
-                $scope.actualIntensity = "Low";
-            }else if(parseInt($scope.steps)/60 > 100
-                    && parseInt($scope.steps)/60 <= 120){
-                $scope.actualIntensity = "Light";
-            }else if(parseInt($scope.steps)/60 > 120
-                    && parseInt($scope.steps)/60 <= 130){
-                $scope.actualIntensity = "Moderate";
-            }else if(parseInt($scope.steps)/60 > 130
-                    && parseInt($scope.steps)/60 <= 140){
-                $scope.actualIntensity = "Active";
-            }else if(parseInt($scope.steps)/60 > 140
-                    && parseInt($scope.steps)/60 <= 150){
-                $scope.actualIntensity = "Very Active";
-            }else if(parseInt($scope.steps)/60 > 150
-                    && parseInt($scope.steps)/60 <= 160){
-                $scope.actualIntensity = "Exceptionally Active";
-            }else{
-                $scope.actualIntensity = "Athletic";
-            }
-        
             var actualStart = parseInt(sessionStorage.startDate);
             var actualEnd = parseInt(sessionStorage.endDate);
             var sec = (actualEnd - actualStart)/1000;
@@ -287,6 +311,28 @@ app.controller('estimateController', function($scope){
                 $scope.duration = hr + " hr";
             }
             
+            // Determine the intensity of the exercise
+            if(parseInt($scope.steps)<= 100){
+                $scope.actualIntensity = "Low";
+            }else if(parseInt($scope.steps) > 100
+                    && parseInt($scope.steps) <= 120){
+                $scope.actualIntensity = "Light";
+            }else if(parseInt($scope.steps) > 120
+                    && parseInt($scope.steps) <= 130){
+                $scope.actualIntensity = "Moderate";
+            }else if(parseInt($scope.steps) > 130
+                    && parseInt($scope.steps) <= 140){
+                $scope.actualIntensity = "Active";
+            }else if(parseInt($scope.steps) > 140
+                    && parseInt($scope.steps) <= 150){
+                $scope.actualIntensity = "Very Active";
+            }else if(parseInt($scope.steps) > 150
+                    && parseInt($scope.steps) <= 160){
+                $scope.actualIntensity = "Exceptionally Active";
+            }else{
+                $scope.actualIntensity = "Athletic";
+            }
+        
             $('#estimates').hide();
             $('#actual').show();
         }else{
