@@ -47,15 +47,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "net.texh.cordovapluginstepcounter": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/texh/cordova-plugin-stepcounter.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-pedometer": {
         "source": {
             "type": "registry",

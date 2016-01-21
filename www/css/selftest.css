@@ -24,18 +24,6 @@ a{
     margin-top: 70px;
 }
 
-.main-button{
-    width: 60%;
-    margin-left: 20%;
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    color: white;
-    margin-top: 20px;
-    background-color: forestgreen;
-    border-radius: 7px;
-}
-
 #note{
     width: 60%;
     margin-left: 20%;
@@ -46,4 +34,8 @@ a{
     margin-top: 20px;
     border-radius: 7px;
     color: black;
+}
+
+#add_notes{
+    border: 1px solid;
 }

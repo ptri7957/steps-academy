@@ -1,0 +1,54 @@
+<!--
+<div id="name"></div>
+-->
+<div id="intro">
+    <label id="label" class="item item-input">
+        <input id="text" type="text" placeholder="Enter the name of your trip">
+    </label>
+    <div class="buttons" ng-click="addNotes()">
+        <button class="button button-full button-stable" id="add_notes">Add Notes</button>
+    </div>
+    
+    <div class="buttons" ng-click="startPedometerUpdates()">
+        <button class="button button-full button-positive">Start Recording</button>
+    </div>
+</div>
+
+<div id="started">
+    
+    <div id="recording"></div>
+    <div id="inst">Click End when you have completed your activity.</div>
+    <div class="buttons" ng-click="addNotess()">
+        <button class="button button-full button-stable" id="add_notes">Add Notes</button>
+    </div>
+    <div class="buttons" ng-click="stopPedometerUpdates()">
+        <button class="button button-full button-positive">Stop Recording</button>
+    </div>
+    <div id="results"></div>
+</div>
+<div id="notes">
+    <label id="label" class="item item-input">
+        <span class="input-label">Mood:</span>
+        <input id="mood" type="text">
+    </label>
+    <label id="label" class="item item-input">
+        <span class="input-label">Health:</span>
+        <input id="health" type="text">
+    </label>
+    <label id="label" class="item item-input">
+        <span class="input-label">Weather:</span>
+        <input id="weather" type="text">
+    </label>
+    <label id="label" class="item item-input">
+        <span class="input-label">Activity:</span>
+        <input id="activity" type="text">
+    </label>
+    <label id="label" class="item item-input">
+        <span class="input-label">Transport:</span>
+        <input id="transport" type="text">
+    </label>
+
+    <div class="buttons" ng-click="done()">
+        <button class="button button-full button-balanced">Done</button>
+    </div>
+</div>

@@ -1,8 +1,9 @@
 .history{
     margin-top: 20px;
-    border-radius: 5px;
+    margin-bottom: 20px;
     box-shadow: 2px 2px 2px 2px darkgray;
     padding-bottom: 5px;
+    height: 400px;
 }
 
 .header{
@@ -21,49 +22,33 @@ a{
     text-decoration: none;
 }
 
-table{
-    border: 1px solid;
-    margin-left: 10%;
-    width: 80%;
-}
-
-td{
-    text-align: center;
-    width: 80px;
-    border: 1px solid;
-}
-
-.start{
-    position: fixed;
-    width: 80%;
-    bottom: 0;
-    margin-bottom: 10px;
-    margin-left: 10%;
-    margin-top: 30px;
-    text-align: center;
-    border-radius: 7px;
-    background-color:forestgreen;
-}
-
-.col{
+#history .col{
     text-align: center;
 }
 
-.start h3{
-    height: 50px;
-    line-height: 50px;
-    color: white;
+.tableContents{
+    border-bottom: 1px solid lightgray;
 }
 
 #title{
-    background-color: grey;
-    color:azure;
+    color:black;
     font-family: sans-serif;
+    text-align: center;
 }
 
+
 #contents{
-    border: 1px solid grey;
+    border: 1px solid lightgray;
     background-color: aliceblue;
     font-family: sans-serif;
     font-size: 10px;
+}
 
+#history_title{
+    background-color: cornflowerblue;
+    color: white;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid cornflowerblue;
+}

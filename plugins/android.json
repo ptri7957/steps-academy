@@ -8,28 +8,25 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         },
         "cordova-plugin-pedometer": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
-        },
-        "net.texh.cordovapluginstepcounter": {
-            "PACKAGE_NAME": "com.ionicframework.stepsacademy356934"
+            "PACKAGE_NAME": "com.ionicframework.stepsacademy638311"
         }
     },
     "dependent_plugins": {}

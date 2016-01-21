@@ -1,0 +1,37 @@
+<!-- User history -->
+<div class="history">
+    <div id="history_title">History</div>
+    <div id="history">
+        <div class="row">
+            <div class="col" id="title"><strong>Name</strong></div>
+                <div class="col" id="title"><strong>Steps</strong></div>
+                <div class="col" id="title"><strong>Duration</strong></div>
+                <div class="col" id="title"><strong>Intensity</strong></div>
+        </div>
+        <ion-scroll zooming="true" direction="y" style="height: 300px">
+            <div class="row" ng-repeat="message in filteredMessages | reverse" ng-if="filteredMessages.length > 0">
+                <div class="col tableContents">{{message.name}}</div>
+                <div class="col tableContents">{{message.steps}}</div>
+                <div class="col tableContents" ng-if="(message.end_date - message.start_date)/1000 < 60">
+                    {{(message.end_date - message.start_date)/1000 | number : 0}} sec
+                </div>
+                <div class="col tableContents" ng-if="(message.end_date - message.start_date)/1000 >= 60 
+                                                 && (message.end_date - message.start_date)/1000 < 3600">
+                    {{(message.end_date - message.start_date)/1000/60 | number : 0}} min
+                </div>
+                <div class="col tableContents" ng-if="(message.end_date - message.start_date)/1000 >= 3600">
+                    {{(message.end_date - message.start_date)/1000/60/60 | number : 0}} hr
+                </div>
+                <div class="col tableContents">{{message.intensity}}</div>
+            </div>
+        </ion-scroll>
+    </div>
+                
+</div>
+<!-- Start button -->
+<a href="#selftest">
+    <div class="buttons">
+        <button class="button button-full button-positive">Start New</button>
+    </div>
+</a>
+
