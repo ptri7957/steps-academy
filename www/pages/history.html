@@ -1,6 +1,7 @@
 <!-- User history -->
 <div class="history">
     <div id="history_title">History</div>
+    <div id="nothing"><p>Nothing yet. Your history will be displayed once you save an activity.</p></div>
     <div id="history">
         <div class="row">
             <div class="col" id="title"><strong>Name</strong></div>
@@ -29,9 +30,7 @@
                 
 </div>
 <!-- Start button -->
-<a href="#selftest">
-    <div class="buttons">
-        <button class="button button-full button-positive">Start New</button>
-    </div>
-</a>
+<div class="buttons" ng-click="startSession()">
+    <button class="button button-full button-positive">Start New</button>
+</div>
 

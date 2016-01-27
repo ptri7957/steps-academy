@@ -1,9 +1,14 @@
 .history{
     margin-top: 20px;
     margin-bottom: 20px;
-    box-shadow: 2px 2px 2px 2px darkgray;
+    box-shadow: 2px 2px 2px 1px darkgray;
     padding-bottom: 5px;
     height: 400px;
+}
+
+#nothing{
+    width: 90%;
+    margin-left: 5%;
 }
 
 .header{

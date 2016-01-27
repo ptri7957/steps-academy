@@ -22,12 +22,15 @@ app.controller('mainController', function($scope){
                 $('.error').append(error);
             }else{
                 console.log("Authenticated successfully:", authData);
-                $('#home').show();
+                //$('#home').show();
                 $('#logout').show();
-                // Send user to their history page
-                window.location.href = "#history";
+                
                 // Store user id for future firebase reference
                 sessionStorage.user = authData.uid;
+                
+                // Send user to their history page
+                window.location.href = "#history";
+                
             }
         });
     }
@@ -57,6 +60,9 @@ app.controller('signupController', function($scope){
                         email: email
                     });
                     alert('Sign up successful.');
+                
+                    // Redirect user to sign in page
+                    window.location.href = "#/";
                 }
             });
         }
@@ -66,7 +72,8 @@ app.controller('signupController', function($scope){
 // History controller
 app.controller('historyController',  ['$scope', '$firebaseArray', 
                                       function($scope, $firebaseArray){
-
+    var nothing = $('#nothing').hide();
+    var history = $('#history').hide();
     var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users/' 
                            + sessionStorage.user);
     
@@ -75,11 +82,19 @@ app.controller('historyController',  ['$scope', '$firebaseArray',
     var query = ref.child('activities').orderByChild('start_date');
     $scope.filteredMessages = $firebaseArray(query);
     
-    $scope.filteredMessages.$loaded().then(function(){
-        angular.forEach($scope.filteredMessages, function(result){
-            
-        });
+    $scope.filteredMessages.$loaded().then(function(data){
+        if($scope.filteredMessages.length == 0){
+            nothing.show();
+            history.hide();
+        }else{
+            history.show();
+        }
     });
+                                          
+    $scope.startSession = function(){
+        $('#home').show();
+        window.location.href = "#selftest";
+    }
     
 }]);
 
@@ -201,8 +216,6 @@ app.controller('pedometerController', function($scope, $ionicPopup){
                         }
                         
                         $scope.startPedometerUpdates();
-                        $('#intro').hide();
-                        $('#started').show();
                     }
                 }
             ]
@@ -215,6 +228,8 @@ app.controller('pedometerController', function($scope, $ionicPopup){
         if($('#activityDetails').val() == ""){
             alert("Please enter a name for your activity.");
         } else {
+            $('#intro').hide();
+            $('#started').show();
             // Start steps counter
             pedometer.startPedometerUpdates(successHandler, onError); 
             $('#recording').append("<h3>Recording...</h3>");
@@ -299,9 +314,9 @@ app.controller('estimateController', function($scope){
             
             var actualStart = parseInt(sessionStorage.startDate);
             var actualEnd = parseInt(sessionStorage.endDate);
-            var sec = (actualEnd - actualStart)/1000;
-            var min = (actualEnd - actualStart)/1000/60;
-            var hr = (actualEnd - actualStart)/1000/60/60;
+            var sec = parseInt((actualEnd - actualStart)/1000);
+            var min = parseInt((actualEnd - actualStart)/1000/60);
+            var hr = parseInt((actualEnd - actualStart)/1000/60/60);
             
             if(sec < 60){
                 $scope.duration = sec + " sec";

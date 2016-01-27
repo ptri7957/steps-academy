@@ -40,19 +40,6 @@
           </div>
       </ion-content>
     </ion-pane>
-    <script>
-         var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com');
-         $('#home').click(function(){
-             window.location.href = "#history";
-         });   
-        
-         $('#logout').click(function(){
-             ref.unauth();
-             alert("Logged out successfully");
-             window.location.href = "#/";
-             $('#home').hide();
-             $('#logout').hide();
-         });
-    </script>
+    <script src="js/index.js"></script>
   </body>
 </html>
