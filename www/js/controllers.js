@@ -186,40 +186,39 @@ app.controller('pedometerController', function($scope, $ionicPopup){
     
     $scope.ready = function(){
         $scope.data = {};
-        $ionicPopup.show({
-            templateUrl: 'pages/standby.html', 
-            title: 'Recording Ready',
-            scope: $scope,
-            buttons: [
-                {
-                    text: 'Record',
-                    type: 'button-positive',
-                    onTap: function(){
-                        var estimate = $("#stepInput").val();
-                        var intensity = $('#intensityInput').val();
-                        var duration = $('#durationInput').val();
-                        var measure = $('#timeInput').val();
-                        if(estimate.length > 0){
-                            sessionStorage.estimate = estimate;
+        if($('#activityDetails').val() != ""){
+            $ionicPopup.show({
+                templateUrl: 'pages/standby.html', 
+                title: 'Recording Ready',
+                scope: $scope,
+                buttons: [
+                    {
+                        text: 'Record',
+                        type: 'button-positive',
+                        onTap: function(){
+                            var estimate = $("#stepInput").val();
+                            var intensity = $('#intensityInput').val();
+                            var duration = $('#durationInput').val();
+                            var measure = $('#timeInput').val();
+
+                            if(estimate == "" || intensity == "--Select--" 
+                               || duration == "" || measure == "--Select--"){
+                                alert("One or more fields are empty");
+                            }else{
+                                sessionStorage.estimate = estimate;
+                                sessionStorage.intensity = intensity;
+                                sessionStorage.duration = duration;
+                                sessionStorage.measure = measure;
+
+                                $scope.startPedometerUpdates();
+                            }
                         }
-                        
-                        if(intensity != "--Select--"){
-                            sessionStorage.intensity = intensity;
-                        }
-                        
-                        if(duration.length > 0){
-                            sessionStorage.duration = duration;
-                        }
-                        
-                        if(measure != "--Select--"){
-                            sessionStorage.measure = measure;
-                        }
-                        
-                        $scope.startPedometerUpdates();
                     }
-                }
-            ]
-        });
+                ]
+            });
+        }else{
+            alert("Enter a name for your activity.");
+        }
     };
     
     // Function to start the pedometer updates
@@ -266,93 +265,51 @@ app.controller('pedometerController', function($scope, $ionicPopup){
 
 // Estimate controller
 app.controller('estimateController', function($scope){
-    $('#actual').hide();
+    //$('#actual').hide();
 
     $scope.name = sessionStorage.name;
     $scope.steps = sessionStorage.numberOfSteps;
     $scope.actualIntensity = "Low";
+    $scope.estimate = sessionStorage.estimate;
+    $scope.intensity = sessionStorage.intensity;
+    $scope.duration = sessionStorage.duration;
+    $scope.measure = sessionStorage.measure;
     
-    $scope.show = function(){
-        //var estimate = $("#stepInput").val();
-        //var intensity = $('#intensityInput').val();
-        //var duration = $('#durationInput').val();
-        //var measure = $('#timeInput').val();
-        
-        var estimate = "";
-        var intensity = "";
-        var duration = "";
-        var measure = "";
-        
-        if(sessionStorage.estimate){
-            estimate = sessionStorage.estimate;
-        }else{
-            estimate = $('#stepInput').val();
-        }
-        
-        if(sessionStorage.intensity){
-            intensity = sessionStorage.intensity;
-        }else{
-            intensity = $('#intensityInput').val();
-        }
-        
-        if(sessionStorage.duration){
-            duration = sessionStorage.duration;
-        }else{
-            duration = $('#durationInput').val();
-        }
-        
-        if(sessionStorage.measure){
-            measure = sessionStorage.measure;
-        }else{
-            measure = $('#timeInput').val();
-        }
-        
-        if(estimate.length > 0 && intensity.length > 0 && duration.length > 0){
-            $('#yourSteps').html(estimate);
-            $('#yourIntensity').html(intensity);  
-            $('#yourDuration').html(duration + " " + measure);
+    var actualStart = parseInt(sessionStorage.startDate);
+    var actualEnd = parseInt(sessionStorage.endDate);
+    var sec = parseInt((actualEnd - actualStart)/1000);
+    var min = parseInt((actualEnd - actualStart)/1000/60);
+    var hr = parseInt((actualEnd - actualStart)/1000/60/60);
             
-            var actualStart = parseInt(sessionStorage.startDate);
-            var actualEnd = parseInt(sessionStorage.endDate);
-            var sec = parseInt((actualEnd - actualStart)/1000);
-            var min = parseInt((actualEnd - actualStart)/1000/60);
-            var hr = parseInt((actualEnd - actualStart)/1000/60/60);
-            
-            if(sec < 60){
-                $scope.duration = sec + " sec";
-            }else if(sec >= 60 && sec <= 3600){
-                $scope.duration = min + " min";
-            }else{
-                $scope.duration = hr + " hr";
-            }
-            
-            // Determine the intensity of the exercise
-            if(parseInt($scope.steps)<= 100){
-                $scope.actualIntensity = "Low";
-            }else if(parseInt($scope.steps) > 100
-                    && parseInt($scope.steps) <= 120){
-                $scope.actualIntensity = "Light";
-            }else if(parseInt($scope.steps) > 120
-                    && parseInt($scope.steps) <= 130){
-                $scope.actualIntensity = "Moderate";
-            }else if(parseInt($scope.steps) > 130
-                    && parseInt($scope.steps) <= 140){
-                $scope.actualIntensity = "Active";
-            }else if(parseInt($scope.steps) > 140
-                    && parseInt($scope.steps) <= 150){
-                $scope.actualIntensity = "Very Active";
-            }else if(parseInt($scope.steps) > 150
-                    && parseInt($scope.steps) <= 160){
-                $scope.actualIntensity = "Exceptionally Active";
-            }else{
-                $scope.actualIntensity = "Athletic";
-            }
-        
-            $('#estimates').hide();
-            $('#actual').show();
-        }else{
-            alert("One or more fields are empty");
-        }
+    if(sec < 60){
+        $scope.actualDuration = sec + " sec";
+    }else if(sec >= 60 && sec <= 3600){
+        $scope.actualDuration = min + " min";
+    }else{
+        $scope.actualDuration = hr + " hr";
+    }
+    
+    // Determine the intensity of the exercise
+    if(parseInt($scope.steps)/min <= 100){
+        $scope.actualIntensity = "Low";
+    }else if(parseInt($scope.steps)/min > 100
+            && parseInt($scope.steps)/min <= 120){
+        $scope.actualIntensity = "Light";
+    }else if(parseInt($scope.steps)/min > 120
+            && parseInt($scope.steps)/min <= 130){
+        $scope.actualIntensity = "Moderate";
+    }else if(parseInt($scope.steps)/min > 130
+            && parseInt($scope.steps)/min <= 140){
+        $scope.actualIntensity = "Active";
+    }else if(parseInt($scope.steps)/min > 140
+            && parseInt($scope.steps)/min <= 150){
+        $scope.actualIntensity = "Very Active";
+    }else if(parseInt($scope.steps)/min > 150
+            && parseInt($scope.steps)/min <= 160){
+        $scope.actualIntensity = "Exceptionally Active";
+    }
+    if(parseInt($scope.steps)/min > 160){
+        $scope.actualIntensity = "Athletic";
     }
     
     // Save all pedometer data onto firebase dashboard
