@@ -29,7 +29,7 @@
   <body ng-app="starter">
 
     <ion-pane>
-      <ion-header-bar class="bar bar-stable">
+      <ion-header-bar class="bar bar-stable" align-title="center">
         <button class="button icon ion-home" id="home"> Home</button>  
         <h1 class="title">Steps Academy</h1>
         <button class="button icon ion-log-out" id="logout"> Log Out</button> 
@@ -40,19 +40,6 @@
           </div>
       </ion-content>
     </ion-pane>
-    <script>
-         var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com');
-         $('#home').click(function(){
-             window.location.href = "#history";
-         });   
-        
-         $('#logout').click(function(){
-             ref.unauth();
-             alert("Logged out successfully");
-             window.location.href = "#/";
-             $('#home').hide();
-             $('#logout').hide();
-         });
-    </script>
+    <script src="js/index.js"></script>
   </body>
 </html>

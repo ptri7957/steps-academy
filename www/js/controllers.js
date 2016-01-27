@@ -22,12 +22,15 @@ app.controller('mainController', function($scope){
                 $('.error').append(error);
             }else{
                 console.log("Authenticated successfully:", authData);
-                $('#home').show();
+                //$('#home').show();
                 $('#logout').show();
-                // Send user to their history page
-                window.location.href = "#history";
+                
                 // Store user id for future firebase reference
                 sessionStorage.user = authData.uid;
+                
+                // Send user to their history page
+                window.location.href = "#history";
+                
             }
         });
     }
@@ -57,6 +60,9 @@ app.controller('signupController', function($scope){
                         email: email
                     });
                     alert('Sign up successful.');
+                
+                    // Redirect user to sign in page
+                    window.location.href = "#/";
                 }
             });
         }
@@ -66,7 +72,8 @@ app.controller('signupController', function($scope){
 // History controller
 app.controller('historyController',  ['$scope', '$firebaseArray', 
                                       function($scope, $firebaseArray){
-
+    var nothing = $('#nothing').hide();
+    var history = $('#history').hide();
     var ref = new Firebase('https://glaring-inferno-4440.firebaseio.com/Users/' 
                            + sessionStorage.user);
     
@@ -75,11 +82,19 @@ app.controller('historyController',  ['$scope', '$firebaseArray',
     var query = ref.child('activities').orderByChild('start_date');
     $scope.filteredMessages = $firebaseArray(query);
     
-    $scope.filteredMessages.$loaded().then(function(){
-        angular.forEach($scope.filteredMessages, function(result){
-            
-        });
+    $scope.filteredMessages.$loaded().then(function(data){
+        if($scope.filteredMessages.length == 0){
+            nothing.show();
+            history.hide();
+        }else{
+            history.show();
+        }
     });
+                                          
+    $scope.startSession = function(){
+        $('#home').show();
+        window.location.href = "#selftest";
+    }
     
 }]);
 
@@ -90,7 +105,7 @@ app.filter('reverse', function() {
 });
 
 // Pedometer controller
-app.controller('pedometerController', function($scope){
+app.controller('pedometerController', function($scope, $ionicPopup){
     $('#started').hide();
     $('#notes').hide();
     
@@ -169,23 +184,58 @@ app.controller('pedometerController', function($scope){
         alert(failure);
     };
     
+    $scope.ready = function(){
+        $scope.data = {};
+        $ionicPopup.show({
+            templateUrl: 'pages/standby.html', 
+            title: 'Recording Ready',
+            scope: $scope,
+            buttons: [
+                {
+                    text: 'Record',
+                    type: 'button-positive',
+                    onTap: function(){
+                        var estimate = $("#stepInput").val();
+                        var intensity = $('#intensityInput').val();
+                        var duration = $('#durationInput').val();
+                        var measure = $('#timeInput').val();
+                        if(estimate.length > 0){
+                            sessionStorage.estimate = estimate;
+                        }
+                        
+                        if(intensity != "--Select--"){
+                            sessionStorage.intensity = intensity;
+                        }
+                        
+                        if(duration.length > 0){
+                            sessionStorage.duration = duration;
+                        }
+                        
+                        if(measure != "--Select--"){
+                            sessionStorage.measure = measure;
+                        }
+                        
+                        $scope.startPedometerUpdates();
+                    }
+                }
+            ]
+        });
+    };
+    
     // Function to start the pedometer updates
     $scope.startPedometerUpdates = function() {
         sessionStorage.startDate = new Date().getTime();
-        if($('#text').val() == ""){
+        if($('#activityDetails').val() == ""){
             alert("Please enter a name for your activity.");
         } else {
+            $('#intro').hide();
+            $('#started').show();
             // Start steps counter
             pedometer.startPedometerUpdates(successHandler, onError); 
             $('#recording').append("<h3>Recording...</h3>");
         
-            var name = $('#text').val();
+            var name = $('#activityDetails').val();
             sessionStorage.name = name;
-        
-            // Hide main content
-            //$('#name').append("<h1>" + name + "</h1>");
-            $('#intro').hide();
-            $('#started').show();
         }
     };
     
@@ -223,42 +273,50 @@ app.controller('estimateController', function($scope){
     $scope.actualIntensity = "Low";
     
     $scope.show = function(){
-        var estimate = $("#stepInput").val();
-        var intensity = $('#intensityInput').val();
-        var duration = $('#durationInput').val();
-        var measure = $('#timeInput').val();
-                
+        //var estimate = $("#stepInput").val();
+        //var intensity = $('#intensityInput').val();
+        //var duration = $('#durationInput').val();
+        //var measure = $('#timeInput').val();
+        
+        var estimate = "";
+        var intensity = "";
+        var duration = "";
+        var measure = "";
+        
+        if(sessionStorage.estimate){
+            estimate = sessionStorage.estimate;
+        }else{
+            estimate = $('#stepInput').val();
+        }
+        
+        if(sessionStorage.intensity){
+            intensity = sessionStorage.intensity;
+        }else{
+            intensity = $('#intensityInput').val();
+        }
+        
+        if(sessionStorage.duration){
+            duration = sessionStorage.duration;
+        }else{
+            duration = $('#durationInput').val();
+        }
+        
+        if(sessionStorage.measure){
+            measure = sessionStorage.measure;
+        }else{
+            measure = $('#timeInput').val();
+        }
+        
         if(estimate.length > 0 && intensity.length > 0 && duration.length > 0){
             $('#yourSteps').html(estimate);
             $('#yourIntensity').html(intensity);  
             $('#yourDuration').html(duration + " " + measure);
             
-            if(parseInt($scope.steps)/60 <= 100){
-                $scope.actualIntensity = "Low";
-            }else if(parseInt($scope.steps)/60 > 100
-                    && parseInt($scope.steps)/60 <= 120){
-                $scope.actualIntensity = "Light";
-            }else if(parseInt($scope.steps)/60 > 120
-                    && parseInt($scope.steps)/60 <= 130){
-                $scope.actualIntensity = "Moderate";
-            }else if(parseInt($scope.steps)/60 > 130
-                    && parseInt($scope.steps)/60 <= 140){
-                $scope.actualIntensity = "Active";
-            }else if(parseInt($scope.steps)/60 > 140
-                    && parseInt($scope.steps)/60 <= 150){
-                $scope.actualIntensity = "Very Active";
-            }else if(parseInt($scope.steps)/60 > 150
-                    && parseInt($scope.steps)/60 <= 160){
-                $scope.actualIntensity = "Exceptionally Active";
-            }else{
-                $scope.actualIntensity = "Athletic";
-            }
-        
             var actualStart = parseInt(sessionStorage.startDate);
             var actualEnd = parseInt(sessionStorage.endDate);
-            var sec = (actualEnd - actualStart)/1000;
-            var min = (actualEnd - actualStart)/1000/60;
-            var hr = (actualEnd - actualStart)/1000/60/60;
+            var sec = parseInt((actualEnd - actualStart)/1000);
+            var min = parseInt((actualEnd - actualStart)/1000/60);
+            var hr = parseInt((actualEnd - actualStart)/1000/60/60);
             
             if(sec < 60){
                 $scope.duration = sec + " sec";
@@ -268,6 +326,28 @@ app.controller('estimateController', function($scope){
                 $scope.duration = hr + " hr";
             }
             
+            // Determine the intensity of the exercise
+            if(parseInt($scope.steps)<= 100){
+                $scope.actualIntensity = "Low";
+            }else if(parseInt($scope.steps) > 100
+                    && parseInt($scope.steps) <= 120){
+                $scope.actualIntensity = "Light";
+            }else if(parseInt($scope.steps) > 120
+                    && parseInt($scope.steps) <= 130){
+                $scope.actualIntensity = "Moderate";
+            }else if(parseInt($scope.steps) > 130
+                    && parseInt($scope.steps) <= 140){
+                $scope.actualIntensity = "Active";
+            }else if(parseInt($scope.steps) > 140
+                    && parseInt($scope.steps) <= 150){
+                $scope.actualIntensity = "Very Active";
+            }else if(parseInt($scope.steps) > 150
+                    && parseInt($scope.steps) <= 160){
+                $scope.actualIntensity = "Exceptionally Active";
+            }else{
+                $scope.actualIntensity = "Athletic";
+            }
+        
             $('#estimates').hide();
             $('#actual').show();
         }else{

@@ -1,7 +1,28 @@
 #results_table{
     text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 2px 1px darkgray;
+    padding-bottom: 5px;
 }
 
 .result_col{
     border-bottom: 1px solid lightgray;
+}
+
+#activity{
+    margin-bottom: 30px;
+}
+
+#result_title{
+    background-color: cornflowerblue;
+    color: white;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid cornflowerblue;
+}
+
+#results_table .row .col{
+    height: 40px;
+    line-height: 40px;
 }
